@@ -8,7 +8,7 @@ const psicologosController = {
     listarPsicologos: async (req, res) => {
       try {
       
-      const listadePsicologos = await Psicologos.findOne();
+      const listadePsicologos = await Psicologos.findAll();
 
       res.status(200).json(listadePsicologos);
     } catch {
@@ -16,20 +16,26 @@ const psicologosController = {
     }
   }, 
     
-//Listar Psicologos por ID
+  //Listar Psicologos por ID
 
-  listarPsicologosId: async (req, res) => {
-      try {
-          const listaPsicologosId = await Psicologos.$({
-          id
-          });
-      
-          res.json(listaPsicologosId);
+  async listarPsicologosId(req, res) {
+    try {
+      const { id } = req.params     
+      const listaDePsicologos = await Psicologos.findAll({
+        where: {
+          id: id
+        }
+      });
 
-  } catch {
-    return res.status(404).json("Id não encontrado");
-  }
-},
+      if (!listaDePsicologos) {
+        res.status(404).json("Id não encontrado")
+      } else {
+        res.status(200).json(listaDePsicologos)
+      }
+    } catch (error) {
+      res.status(404).json({ error })
+    }
+  },
   
 //Cadastrar Psicologos
 
@@ -77,17 +83,24 @@ const psicologosController = {
     async deletarPsicologos(req, res) {
       try
       {       
-      const { id } = req.params;
-      await Psicologos.destroy({
+      const { id } = req.params
+
+      const deletandoPsicologo = await Psicologos.destroy({
         where: {
           id,
         },
-      })
-  
-      res.status(204);
+      });
 
-      } catch(error) {
-        return res.status(500).json("Ocorreu um grande problema, vai explodir");
+      if(!deletandoPsicologo) {
+        res.status(404).json("Id não encontrado")  
+      }
+      else {
+        res.status(204).json
+
+      }
+    
+      } catch (error) {
+        return res.status(400).json({error})
       }
   }
 };    
