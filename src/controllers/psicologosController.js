@@ -8,7 +8,7 @@ const psicologosController = {
     listarPsicologos: async (req, res) => {
       try {
       
-      const listadePsicologos = await Psicologos.findAll();
+      const listadePsicologos = await Psicologos.findOne();
 
       res.status(200).json(listadePsicologos);
     } catch {
