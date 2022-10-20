@@ -1,9 +1,7 @@
 const Psicologos = require("../models/Psicologos");
 const bcrypt = require("bcryptjs");
-const { where, json } = require("sequelize");
     
 //Listar todos Psicologos
-
 const psicologosController = {
     listarPsicologos: async (req, res) => {
       try {
@@ -17,8 +15,7 @@ const psicologosController = {
   }, 
     
   //Listar Psicologos por ID
-
-  async listarPsicologosId(req, res) {
+  async listarPsicologos(req, res) {
     try {
       const { id } = req.params     
       const listaDePsicologos = await Psicologos.findAll({
@@ -27,8 +24,8 @@ const psicologosController = {
         }
       });
 
-      if (!listaDePsicologos) {
-        res.status(404).json("Id não encontrado")
+      if(listaDePsicologos) {
+        return res.status(404).json("Id não encontrado")
       } else {
         res.status(200).json(listaDePsicologos)
       }
@@ -38,7 +35,6 @@ const psicologosController = {
   },
   
 //Cadastrar Psicologos
-
    async cadastrarPsicologos (req, res) {
 
     const { nome, email, senha, apresentacao } = req.body;    
