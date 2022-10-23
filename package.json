@@ -1,28 +1,29 @@
 {
   "name": "desafio3-lavie-gamaacademy",
   "version": "1.0.0",
-  "main": "app.js",
+  "description": "Criacao de API para o desafio 3 da turma 45 da Gama Academy",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "express": "^4.18.2",
     "express-jwt": "^7.7.5",
     "express-validation": "^4.1.0",
-    "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.25.2"
+    "nodemon": "^2.0.20",
+    "sequelize": "^6.25.1"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.20"
+  "directories": {
+    "doc": "docs"
   },
+  "devDependencies": {},
+  "keywords": [],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RicardoGeneolle/desafio3-lavie-gamaacademy.git"
@@ -30,6 +31,5 @@
   "bugs": {
     "url": "https://github.com/RicardoGeneolle/desafio3-lavie-gamaacademy/issues"
   },
-  "homepage": "https://github.com/RicardoGeneolle/desafio3-lavie-gamaacademy#readme",
-  "description": ""
+  "homepage": "https://github.com/RicardoGeneolle/desafio3-lavie-gamaacademy#readme"
 }

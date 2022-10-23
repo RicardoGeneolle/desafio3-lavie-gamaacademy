@@ -1,16 +1,34 @@
-const express = require("express");
-const psicologosController = require("../controllers/psicologosController");
-const requestLog = require("../middlewares/requestLog");
-const PsicologosCreateValidation = require("../validations/psicologos/create");
-const routes = express.Router();
+const express = require('express')
+const auth = require('../middlewares/auth')
+const requestLog = require('../middlewares/requestLog')
+const authLoginValidation = require('../validations/auth/login')
+const authController = require('../controllers/authController')
+const pacientesController = require('../controllers/pacientesController')
+const psicologosController = require('../controllers/psicologosController')
+const PsicologosCreateValidation = require('../validations/psicologos/create')
+const atendimentoController = require('../controllers/atendimentoControllers')
+const routes = express.Router()
 
-routes.get("/psicologos", requestLog, psicologosController.listarPsicologos);
-routes.get("/psicologos/:id", psicologosController.listarPsicologosId);
+routes.post('/login', authLoginValidation, authController.login)
 
-routes.post("/psicologos", PsicologosCreateValidation, psicologosController.cadastrarPsicologos);
+routes.get('/pacientes', pacientesController.listarPacientes)
+routes.get('/pacientes/:id', pacientesController.listarPacientesId)
+routes.post('/pacientes', pacientesController.cadastrarPacientes)
+routes.put('/pacientes/:id', pacientesController.atualizarPacientes)
+routes.delete('/pacientes/:id', pacientesController.deletarPacientes)
 
-routes.put("/psicologos/:id", psicologosController.atualizarPsicologos);
+routes.get('/psicologos', requestLog, psicologosController.listarPsicologos)
+routes.get('/psicologos/:id', psicologosController.listarPsicologosId)
+routes.post(
+  '/psicologos',
+  PsicologosCreateValidation,
+  psicologosController.cadastrarPsicologos
+)
+routes.put('/psicologos/:id', psicologosController.atualizarPsicologos)
+routes.delete('/psicologos/:id', psicologosController.deletarPsicologos)
 
-routes.delete("/psicologos/:id", psicologosController.deletarPsicologos);
+routes.get('/atendimentos', atendimentoController.listarAtendimentos)
+routes.get('/atendimentos/:id', atendimentoController.listarUmAtendimento)
+routes.post('/atendimentos', auth, atendimentoController.cadastrarAtendimento)
 
-module.exports = routes; 
+module.exports = routes

@@ -1,0 +1,4 @@
+#ignorar todos .env
+*.env
+.secret.js
+./secret.js

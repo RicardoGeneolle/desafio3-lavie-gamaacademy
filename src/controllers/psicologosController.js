@@ -1,31 +1,30 @@
-const Psicologos = require("../models/Psicologos");
-const bcrypt = require("bcryptjs");
-    
+const Psicologos = require('../models/Psicologos')
+const bcrypt = require('bcryptjs')
+
 //Listar todos Psicologos
 const psicologosController = {
-    listarPsicologos: async (req, res) => {
-      try {
-      
-      const listadePsicologos = await Psicologos.findAll();
-
-      res.status(200).json(listadePsicologos);
-    } catch {
-      return res.status(200).json();
-    }
-  }, 
-    
-  //Listar Psicologos por ID
-  async listarPsicologos(req, res) {
+  listarPsicologos: async (req, res) => {
     try {
-      const { id } = req.params     
+      const listaPsicologos = await Psicologos.findAll()
+      res.status(200).json(listaPsicologos)
+    } catch (error) {
+      console.log(error)
+      res.status(404).json({ error })
+    }
+  },
+
+  //Listar Psicologos por ID
+  async listarPsicologosId(req, res) {
+    try {
+      const { id } = req.params
       const listaDePsicologos = await Psicologos.findAll({
         where: {
-          id: id
+          id
         }
-      });
+      })
 
-      if(listaDePsicologos) {
-        return res.status(404).json("Id não encontrado")
+      if (!listaDePsicologos) {
+        return res.status(404).json('Id não encontrado')
       } else {
         res.status(200).json(listaDePsicologos)
       }
@@ -33,33 +32,40 @@ const psicologosController = {
       res.status(404).json({ error })
     }
   },
-  
-//Cadastrar Psicologos
-   async cadastrarPsicologos (req, res) {
 
-    const { nome, email, senha, apresentacao } = req.body;    
-    const newSenha = bcrypt.hashSync(senha, 10);
-    const novoPsicologo = await Psicologos.create({
-      nome,
-      email,
-      senha: newSenha,
-      apresentacao
-    });
+  //Cadastrar Psicologos
+  async cadastrarPsicologos(req, res) {
+    try {
+      const { nome, email, senha, apresentacao } = req.body
+      const newSenha = bcrypt.hashSync(senha, 10)
+      const novoPsicologo = await Psicologos.create({
+        nome,
+        email,
+        senha: newSenha,
+        apresentacao
+      })
 
-         res.status(201).json(novoPsicologo);
-   },
+      if (!novoPsicologo) {
+        res.status(400).json('Houve um erro na requisição.')
+      } else {
+        res.status(201).json(novoPsicologo)
+      }
+    } catch (error) {
+      res.status(400).json({ error })
+    }
+  },
 
   //Atualizar Psicologos
+  async atualizarPsicologos(req, res) {
+    const { id } = req.params
+    const { nome, email, senha, apresentacao } = req.body
 
-    async atualizarPsicologos(req, res) {
-      const { id } = req.params;
-      const { nome, email, senha, apresentacao } = req.body;
+    if (!id) return res.status(400).json('Erro na solicitação')
 
-      if (!id) return res.status(400).json("Erro na solicitação");
-      
-      const newSenha = bcrypt.hashSync(senha, 10);
+    const newSenha = bcrypt.hashSync(senha, 10)
 
-      const psicologoAtualizado = await Psicologos.update({
+    const psicologoAtualizado = await Psicologos.update(
+      {
         nome,
         email,
         senha: newSenha,
@@ -67,38 +73,31 @@ const psicologosController = {
       },
       {
         where: {
-          id,
-        },
-      },
-    );
-    res.status(201).json("Psicologo Atualizado");
+          id
+        }
+      }
+    )
+    res.status(201).json('Psicologo Atualizado')
   },
-  
+
   // Deletando Psicologos
-
-    async deletarPsicologos(req, res) {
-      try
-      {       
+  async deletarPsicologos(req, res) {
+    try {
       const { id } = req.params
-
       const deletandoPsicologo = await Psicologos.destroy({
         where: {
-          id,
-        },
-      });
-
-      if(!deletandoPsicologo) {
-        res.status(404).json("Id não encontrado")  
+          id
+        }
+      })
+      if (!deletandoPsicologo) {
+        res.status(404).json('Id não encontrado')
+      } else {
+        res.sendStatus(204)
       }
-      else {
-        res.status(204).json
-
-      }
-    
-      } catch (error) {
-        return res.status(400).json({error})
-      }
+    } catch (error) {
+      return res.status(400).json({ error })
+    }
   }
-};    
+}
 
-  module.exports = psicologosController;
+module.exports = psicologosController
