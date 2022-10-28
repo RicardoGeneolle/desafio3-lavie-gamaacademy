@@ -1,5 +1,5 @@
 const DB_USER = 'root'
-const DB_PASS = '291131'
+const DB_PASS = ''
 const DB_NAME = 'la_vie'
 
 module.exports = {
